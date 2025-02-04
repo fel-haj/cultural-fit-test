@@ -1,0 +1,41 @@
+<div class="flex flex-col justify-center items-center text-center gap-y-2 h-full">
+  <h1 class="text-xl font-bold">Question {{.QuestionNo}}</h1>
+  <h2 class="my-2 text-xl">{{.Question}}</h2>
+  <p class="italic">Rank the options out of 5<br>(1 = best option, 2 = second best option, 3= only consider after 2 best options, 4 = last resort, 5 = would never consider that)</p>
+  <div class="relative w-full">
+    <span class="peer cursor-pointer text-blue-500 underline hover:text-gray-400">Rules</span>
+    <div class="absolute top-full left-1/2 transform -translate-x-1/2 w-max max-w-md bg-white border border-gray-300 rounded-md p-4 opacity-0 peer-hover:opacity-100 transition-opacity ease-in-out duration-300 z-10 shadow-lg pointer-events-none">
+      <p>Make sure to have at least one option marked with 1.</p>
+      <p>Every answer/number can only be picked once.</p>
+      <div class="flex flex-col gap-y-2 mt-2">
+        <h2 class="text-lg font-bold">Disclaimer:</h2>
+        <p>
+          This test saves your progress after every answered question/scenario.
+          If for whatever reason the connection is lost or the test is closed, reloading 
+          the page and reentering your email let's you pick up right where you left of.
+        </p>
+      </div>
+    </div>
+  </div>
+  <form hx-post="/question" hx-target="#main" hx-target-error="#error"> 
+    <input type="hidden" name="questionno" value="{{.QuestionNo}}">
+    <input type="hidden" name="userid" value="{{.UserID}}">
+    <div class="grid grid-cols-1 row-span-4 gap-y-2 items-center">
+      {{range .Choices}}
+      <div class="flex border border-gray-300 rounded-md w-fit items-center justify-between py-2 px-4">
+          <label for={{.ID}} class="w-4/5">{{.Prompt}}</label>
+          <div class="flex-col justify-center items-center gap-y-2">
+              <p>Choose your answer:</p>
+              <select id={{.ID}} name={{.ID}}>
+                  {{range $.Options}} {{/* $ accesses root of passed data to template (QuestionData) */}}
+                  <option value={{.}}>{{.}}</option>
+                  {{end}}
+              </select>
+          </div>
+      </div>
+      {{end}} 
+    </div>
+    <div id="error" class="text-red-600 font-bold my-4"></div>
+    <button type="submit" class="py-1 px-2 text-lg rounded-lg border-2 border-black text-white hover:text-black bg-black hover:bg-white transition-colors ease-in-out duration-300">Submit</button>
+  </form>
+</div>
