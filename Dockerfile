@@ -21,10 +21,6 @@ FROM alpine:3.19 AS runner
 
 WORKDIR /app
 
-ENV DB_PORT="5432"
-ENV DB_NAME="mentoref"
-ENV DB_USER="mentoref_user"
-
 COPY --from=builder /app/builder/mentoref /app/mentoref
 
 COPY --from=builder /app/builder/web/css /app/web/css

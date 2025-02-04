@@ -10,12 +10,7 @@ import (
 )
 
 type DBConfig struct {
-	Host     string
-	Port     string
-	User     string
-	Password string
-	DBName   string
-	SSLMode  string
+	DBURL     string
 }
 
 type User struct {
@@ -39,23 +34,8 @@ type Question struct {
   Chapter string
 }
 
-func GetDBConfig() DBConfig {
-	return DBConfig{
-		Host:     os.Getenv("DB_HOST"),
-		Port:     os.Getenv("DB_PORT"),
-		User:     os.Getenv("DB_USER"),
-		Password: os.Getenv("DB_PASSWORD"),
-		DBName:   os.Getenv("DB_NAME"),
-    SSLMode:  os.Getenv("DB_SSLMODE"),
-	}
-}
-
 func ConnectDB() *sql.DB {
-	config := GetDBConfig()
-  connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
-		config.Host, config.Port, config.User, config.Password, config.DBName, config.SSLMode)
-
-	db, err := sql.Open("postgres", connStr)
+	db, err := sql.Open("postgres", os.Getenv("DB_URL"))
 	if err != nil {
 		log.Fatal(err)
 	}
